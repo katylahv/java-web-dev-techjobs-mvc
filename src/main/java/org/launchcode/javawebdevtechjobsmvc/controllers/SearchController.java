@@ -23,20 +23,20 @@ public class SearchController {
         return "search";
     }
 
-    @PostMapping(value ="")
+    @RequestMapping(value ="results")
     public String displaySearchResults(Model model,
                                        @RequestParam String searchTerm,
                                        @RequestParam String searchType){
         ArrayList<Job> jobs;
-        model.addAttribute("columns",columnChoices);
         if (searchTerm.toLowerCase().equals("all") || searchTerm == ""){
             jobs = JobData.findAll();
             model.addAttribute("title","All Jobs");
         } else {
-            jobs = JobData.findByColumnAndValue(searchTerm,searchType);
-            model.addAttribute("title", "Jobs with " + columnChoices.get(searchTerm) + ": " + searchType);
+            jobs = JobData.findByColumnAndValue(searchType,searchTerm);
+            model.addAttribute("title", "Jobs with " + columnChoices.get(searchType) + ": " + searchTerm);
         }
+        model.addAttribute("columns",columnChoices);
         model.addAttribute("jobs", jobs);
-        return"search/results";
+        return"search";
     }
 }
